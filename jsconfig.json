@@ -1,9 +1,12 @@
 {
+  "$schema": "https://json.schemastore.org/jsconfig",
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/styles/*": ["./styles/*"],
-      "@/stores/*": ["./stores/*"]
+      "@/styles/*": ["./src/styles/*"],
+      "@/stores/*": ["./src/stores/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/components/*": ["./src/components/*"]
     }
   }
 }
