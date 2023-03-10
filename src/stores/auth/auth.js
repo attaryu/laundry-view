@@ -11,13 +11,18 @@ export const auth = createSlice({
   },
   reducers: {
     pushUserData: (state, action) => {
+      const rawRole = action.payload.user.role.split('');
+      const roleUpperCase = rawRole[0].toUpperCase() + rawRole.slice(1).join('');
+
       state.id = action.payload.user.id;
       state.name = action.payload.user.name;
       state.username = action.payload.user.username;
-      state.role = action.payload.user.role;
-      state.requestToken = action.payload.token.request_token;
+      state.role = roleUpperCase;
+      state.requestToken = action.payload.request_token;
     },
   },
 });
 
-export const { pushUserData } = auth.actions;
+export const {
+  pushUserData,
+} = auth.actions;

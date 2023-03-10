@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { BiHide as Hide, BiShowAlt as Show } from 'react-icons/bi';
+
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import Spinner from '@/components/Spinner';
 
@@ -77,13 +79,13 @@ export default function Login() {
               />
               <button type="button" onClick={() => setShow(!show)}>
                 {show ? (
-                  <Show className="scale-110 opacity-50 hover:opacity-100 duration-300" />
+                  <VisibilityIcon sx={{ fontSize: 23 }} className="opacity-50 hover:opacity-90" />
                 ) : (
-                  <Hide className="scale-110 opacity-50 hover:opacity-100 duration-300" />
+                  <VisibilityOffIcon sx={{ fontSize: 23 }} className="opacity-50 hover:opacity-90" />
                 )}
               </button>
             </label>
-            {isError ? <p className="text-xs font-medium text-red-500">{error.data.message}</p> : ''}
+            {isError ? <p className="text-xs font-medium text-red-500">{error?.data?.message ?? ''}</p> : ''}
 
             <button
               type="submit"

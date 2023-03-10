@@ -32,9 +32,10 @@ export const authApi = baseApi.injectEndpoints({
     }),
 
     logout: build.mutation({
-      mutation: () => ({
+      query: () => ({
         url: '/login',
         method: 'DELETE',
+        credentials: 'include',
       }),
     }),
   }),
