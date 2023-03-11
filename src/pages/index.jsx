@@ -46,6 +46,7 @@ export default function Home() {
   return (
     <div className="flex h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
       <main className="w-full flex flex-col gap-5">
+        {/* Total income */}
         <section>
           <div className="flex items-center gap-4">
             <h1 className="text-lg font-bold">Penghasilan</h1>
@@ -76,6 +77,7 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Total data */}
         <section className="w-4/5">
           <h1 className="text-lg font-bold">Total</h1>
 
@@ -87,6 +89,7 @@ export default function Home() {
           </ul>
         </section>
 
+        {/* Linechart intensitas penjualan */}
         <section className="h-48">
           <h1 className="text-lg font-bold">Intensitas Transaksi</h1>
 
@@ -96,6 +99,7 @@ export default function Home() {
         </section>
       </main>
 
+      {/* kotak surat */}
       <aside className="flex h-full w-[45%] flex-col gap-2">
         <h1 className="font-semibold text-center text-sm opacity-60">Mailbox</h1>
         <MailBox />
@@ -143,7 +147,7 @@ function MailBox() {
           <div className="ml-2.5 w-full">
             <div className="flex items-center justify-between w-full">
               <Link
-                href={`/mailbox/email/${email.id}`}
+                href={`/kota-surat/surat/${email.id}`}
                 className="w-28 truncate text-sm font-semibold hover:underline"
               >
                 {email.judul}

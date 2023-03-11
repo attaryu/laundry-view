@@ -50,11 +50,13 @@ export default function Login() {
           Staff
         </h1>
       </div>
+
       <main className="grid w-3/5 place-items-center">
         <div className="flex w-full flex-col items-center rounded-2xl bg-white p-8 shadow-xl">
           <h1 className="mb-10 text-2xl font-bold">Login</h1>
 
           <form action="POST" className="flex w-full flex-col items-center gap-5" onSubmit={loginHandler}>
+            {/* username input */}
             <input
               type="text"
               className="w-full rounded-md bg-zinc-200 px-3 py-2.5 text-sm focus:outline-1 focus:outline"
@@ -64,6 +66,8 @@ export default function Login() {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
+
+            {/* passoword input */}
             <label htmlFor="password" className={`w-full gap-2 rounded-md px-3 py-2.5 text-sm flex items-center bg-zinc-200 cursor-text${passwordFocus ? ' outline-1 outline' : ''}`}>
               <input
                 type={show ? 'text' : 'password'}
@@ -77,6 +81,8 @@ export default function Login() {
                 onBlur={passwordEvent}
                 required
               />
+
+              {/* show/hide password */}
               <button type="button" onClick={() => setShow(!show)}>
                 {show ? (
                   <VisibilityIcon sx={{ fontSize: 23 }} className="opacity-50 hover:opacity-90" />
@@ -85,6 +91,8 @@ export default function Login() {
                 )}
               </button>
             </label>
+
+            {/* error guide */}
             {isError ? <p className="text-xs font-medium text-red-500">{error?.data?.message ?? ''}</p> : ''}
 
             <button

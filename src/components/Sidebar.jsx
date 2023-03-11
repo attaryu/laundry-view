@@ -113,49 +113,49 @@ export default function Sidebar() {
           IconDefault={PersonOutlineOutlinedIcon}
           IconHover={PersonIcon}
           title="Pelanggan"
-          to="/manage/customer"
+          to="/kelola/pelanggan"
           open={open}
         />
         <LinkItem
           IconDefault={StoreOutlinedIcon}
           IconHover={StoreIcon}
           title="Outlet"
-          to="/manage/outlet"
+          to="/kelola/outlet"
           open={open}
         />
         <LinkItem
           IconDefault={BadgeOutlinedIcon}
           IconHover={BadgeIcon}
           title="Staff"
-          to="/manage/staff"
+          to="/kelola/staff"
           open={open}
         />
         <LinkItem
           IconDefault={LocalOfferOutlinedIcon}
           IconHover={LocalOfferIcon}
           title="Paket"
-          to="/manage/package"
+          to="/kelola/paket"
           open={open}
         />
         <LinkItem
           IconDefault={ReceiptLongOutlinedIcon}
           IconHover={ReceiptLongIcon}
           title="Transaksi"
-          to="/transaction"
+          to="/transaksi"
           open={open}
         />
         <LinkItem
           IconDefault={MarkunreadMailboxOutlinedIcon}
           IconHover={MarkunreadMailboxIcon}
           title="Kotak Surat"
-          to="/mailbox"
+          to="/kotak-surat"
           open={open}
         />
         <LinkItem
           IconDefault={DescriptionOutlinedIcon}
           IconHover={DescriptionIcon}
           title="Laporan"
-          to="/report"
+          to="/laporan"
           open={open}
         />
         <LinkItem
