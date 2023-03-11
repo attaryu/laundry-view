@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+import Head from 'next/head';
 
 import Graph from '@/components/Graph';
 import Label from '@/components/Label';
@@ -29,82 +30,97 @@ export default function Home() {
 
   if (isLoading) {
     return (
-      <div className="grid place-items-center h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
-        <Loading />
-      </div>
+      <>
+        <Head>
+          <title>Beranda</title>
+        </Head>
+        <div className="grid place-items-center h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
+          <Loading />
+        </div>
+      </>
     );
   }
 
   if (isError) {
     return (
-      <div className="grid place-items-center h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
-        <p className="font-semibold opacity-40">{error.message}</p>
-      </div>
+      <>
+        <Head>
+          <title>Beranda</title>
+        </Head>
+        <div className="grid place-items-center h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
+          <p className="font-semibold opacity-40">{error.message}</p>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="flex h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
-      <main className="w-full flex flex-col gap-5">
-        {/* Total income */}
-        <section>
-          <div className="flex items-center gap-4">
-            <h1 className="text-lg font-bold">Penghasilan</h1>
+    <>
+      <Head>
+        <title>Beranda</title>
+      </Head>
+      <div className="flex h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
+        <main className="w-full flex flex-col gap-5">
+          {/* Total income */}
+          <section>
+            <div className="flex items-center gap-4">
+              <h1 className="text-lg font-bold">Penghasilan</h1>
 
-            <select
-              className="h-6 rounded-md px-1 text-xs font-medium outline outline-1"
-              value={today}
-              onChange={(e) => setToday(e.target.value)}
-            >
-              <option value="today">Hari Ini</option>
-              <option value="all">Keseluruhan</option>
-            </select>
-          </div>
-          <div className="mt-3 flex items-center gap-5 rounded-lg bg-gradient-to-r from-emerald-300 to-emerald-50 p-3 shadow-lg">
-            <span className="rounded-md bg-yellow-300 p-2.5 text-lg font-bold duration-300">IDR</span>
-            {isLoading ? (
-              <>
-                <Spinner color={{ spin: 'fill-zinc-900', bgSpin: 'fill-zinc-100' }} />
-                <p className="font-bold">Loading...</p>
-              </>
-            ) : null}
-            {isSuccess ? (
-              <p className="text-xl font-bold">
-                {data.income.toLocaleString('id-ID', { currency: 'IDR', style: 'currency' })}
-              </p>
-            ) : null}
-            {isError ? <p className="text-xl font-bold">0</p> : null}
-          </div>
-        </section>
+              <select
+                className="h-6 rounded-md px-1 text-xs font-medium outline outline-1"
+                value={today}
+                onChange={(e) => setToday(e.target.value)}
+              >
+                <option value="today">Hari Ini</option>
+                <option value="all">Keseluruhan</option>
+              </select>
+            </div>
+            <div className="mt-3 flex items-center gap-5 rounded-lg bg-gradient-to-r from-emerald-300 to-emerald-50 p-3 shadow-lg">
+              <span className="rounded-md bg-yellow-300 p-2.5 text-lg font-bold duration-300">IDR</span>
+              {isLoading ? (
+                <>
+                  <Spinner color={{ spin: 'fill-zinc-900', bgSpin: 'fill-zinc-100' }} />
+                  <p className="font-bold">Loading...</p>
+                </>
+              ) : null}
+              {isSuccess ? (
+                <p className="text-xl font-bold">
+                  {data.income.toLocaleString('id-ID', { currency: 'IDR', style: 'currency' })}
+                </p>
+              ) : null}
+              {isError ? <p className="text-xl font-bold">0</p> : null}
+            </div>
+          </section>
 
-        {/* Total data */}
-        <section className="w-4/5">
-          <h1 className="text-lg font-bold">Total</h1>
+          {/* Total data */}
+          <section className="w-4/5">
+            <h1 className="text-lg font-bold">Total</h1>
 
-          <ul className="mt-3 flex gap-8">
-            <Item count={data.total.pelanggan} title="Pelanggan" />
-            <Item count={data.total.outlet} title="Outlet" />
-            <Item count={data.total.staff} title="Staff" />
-            <Item count={data.total.transaksi} title="Transaksi" />
-          </ul>
-        </section>
+            <ul className="mt-3 flex gap-8">
+              <Item count={data.total.pelanggan} title="Pelanggan" />
+              <Item count={data.total.outlet} title="Outlet" />
+              <Item count={data.total.staff} title="Staff" />
+              <Item count={data.total.transaksi} title="Transaksi" />
+            </ul>
+          </section>
 
-        {/* Linechart intensitas penjualan */}
-        <section className="h-48">
-          <h1 className="text-lg font-bold">Intensitas Transaksi</h1>
+          {/* Linechart intensitas penjualan */}
+          <section className="h-48">
+            <h1 className="text-lg font-bold">Intensitas Transaksi</h1>
 
-          <div className="mt-3 h-full w-[750px] rounded-lg bg-white shadow-xl">
-            <Graph data={data.graph} />
-          </div>
-        </section>
-      </main>
+            <div className="mt-3 h-full w-[750px] rounded-lg bg-white shadow-xl">
+              <Graph data={data.graph} />
+            </div>
+          </section>
+        </main>
 
-      {/* kotak surat */}
-      <aside className="flex h-full w-[45%] flex-col gap-2">
-        <h1 className="font-semibold text-center text-sm opacity-60">Mailbox</h1>
-        <MailBox />
-      </aside>
-    </div>
+        {/* kotak surat */}
+        <aside className="flex h-full w-[45%] flex-col gap-2">
+          <h1 className="font-semibold text-center text-sm opacity-60">Mailbox</h1>
+          <MailBox />
+        </aside>
+      </div>
+    </>
   );
 }
 
