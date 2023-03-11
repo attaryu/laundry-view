@@ -15,18 +15,18 @@ import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import MarkunreadMailboxOutlinedIcon from '@mui/icons-material/MarkunreadMailboxOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import PriceChangeIcon from '@mui/icons-material/PriceChange';
-import PriceChangeOutlinedIcon from '@mui/icons-material/PriceChangeOutlined';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import StoreIcon from '@mui/icons-material/Store';
 import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
 
 import LinkItem from '@/components/LinkItem';
+import Spinner from '@/components/Spinner';
 
 import { pushUserData } from '@/stores/auth/auth';
 import { useGenerateRequestTokenQuery, useLogoutMutation } from '@/stores/auth/authApi';
-import Spinner from './Spinner';
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -35,15 +35,14 @@ export default function Sidebar() {
 
   const [open, setOpen] = useState(true);
 
-  const { isSuccess, data, isError } = useGenerateRequestTokenQuery(null, {
-    pollingInterval: 59999,
-  });
+  const { isSuccess, data, isError } = useGenerateRequestTokenQuery(null);
   const [logout, {
     isSuccess: isSuccessLogout, isLoading }] = useLogoutMutation();
 
   useEffect(() => {
     if (isSuccess) {
       dispatch(pushUserData({ ...data.payload }));
+      sessionStorage.setItem('request_token', data.payload.request_token);
     }
 
     if (isSuccessLogout) {
@@ -51,7 +50,7 @@ export default function Sidebar() {
     }
 
     if (isError) {
-      router.push('/login');
+      logout();
     }
   });
 
@@ -61,6 +60,8 @@ export default function Sidebar() {
         open ? 'w-[18%]' : 'w-[6%]'
       } flex h-screen flex-col items-center p-3 outline outline-1 outline-zinc-300 duration-300`}
     >
+
+      {/* User profile */}
       <div className={`${!open ? 'justify-center' : null} mb-1 flex w-full items-center gap-3 overflow-hidden`}>
         <img
           src={`https://ui-avatars.com/api/?name=${
@@ -68,7 +69,7 @@ export default function Sidebar() {
           }&background=random&color=random&bold=true&format=svg&rounded=true`}
           width={50}
           height={50}
-          alt={`${user.name}'s profile`}
+          alt={`${user.name} profile's`}
         />
         {open ? (
           <div>
@@ -84,6 +85,7 @@ export default function Sidebar() {
         ) : null}
       </div>
 
+      {/* Open/close sidebar button */}
       <button
         type="button"
         className="mt-3 mb-5 grid w-full place-items-center rounded-[6px] bg-zinc-200 py-1.5 duration-300"
@@ -98,6 +100,7 @@ export default function Sidebar() {
 
       <Line />
 
+      {/* Link list item */}
       <nav className="my-5 flex w-full flex-col gap-1.5">
         <LinkItem
           IconDefault={HomeOutlinedIcon}
@@ -128,8 +131,8 @@ export default function Sidebar() {
           open={open}
         />
         <LinkItem
-          IconDefault={PriceChangeOutlinedIcon}
-          IconHover={PriceChangeIcon}
+          IconDefault={LocalOfferOutlinedIcon}
+          IconHover={LocalOfferIcon}
           title="Paket"
           to="/manage/package"
           open={open}
@@ -166,6 +169,7 @@ export default function Sidebar() {
 
       <Line />
 
+      {/* Logout button */}
       <div className="mt-auto w-full">
         <button
           type="button"
@@ -176,8 +180,8 @@ export default function Sidebar() {
         >
           {isLoading ? (
             <>
-              <Spinner color={{ bgSpin: 'bg-slate-300', spin: 'bg-slate-100' }} />
-              Loading
+              <Spinner color={{ bgSpin: 'fill-slate-300', spin: 'fill-slate-100' }} />
+              {open ? <span className="text-xs font-medium">Loading</span> : null}
             </>
           ) : (
             <>

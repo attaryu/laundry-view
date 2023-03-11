@@ -7,7 +7,6 @@ export const auth = createSlice({
     name: '',
     username: '',
     role: '',
-    requestToken: '',
   },
   reducers: {
     pushUserData: (state, action) => {
@@ -18,7 +17,6 @@ export const auth = createSlice({
       state.name = action.payload.user.name;
       state.username = action.payload.user.username;
       state.role = roleUpperCase;
-      state.requestToken = action.payload.request_token;
     },
   },
 });
