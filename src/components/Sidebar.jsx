@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
 
 import BadgeIcon from '@mui/icons-material/Badge';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
@@ -11,12 +11,12 @@ import HistoryIcon from '@mui/icons-material/History';
 import HomeIcon from '@mui/icons-material/Home';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
 import MarkunreadMailboxOutlinedIcon from '@mui/icons-material/MarkunreadMailboxOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import StoreIcon from '@mui/icons-material/Store';
@@ -35,7 +35,7 @@ export default function Sidebar() {
 
   const [open, setOpen] = useState(true);
 
-  const { isSuccess, data, isError } = useGenerateRequestTokenQuery(null);
+  const { isSuccess, data, isError } = useGenerateRequestTokenQuery();
   const [logout, {
     isSuccess: isSuccessLogout, isLoading }] = useLogoutMutation();
 
@@ -52,7 +52,7 @@ export default function Sidebar() {
     if (isError) {
       logout();
     }
-  });
+  }, [isSuccess, isSuccessLogout, isError]);
 
   return (
     <div
@@ -113,28 +113,28 @@ export default function Sidebar() {
           IconDefault={PersonOutlineOutlinedIcon}
           IconHover={PersonIcon}
           title="Pelanggan"
-          to="/kelola/pelanggan"
+          to="/kelola/pelanggan?page=1"
           open={open}
         />
         <LinkItem
           IconDefault={StoreOutlinedIcon}
           IconHover={StoreIcon}
           title="Outlet"
-          to="/kelola/outlet"
+          to="/kelola/outlet?page=1"
           open={open}
         />
         <LinkItem
           IconDefault={BadgeOutlinedIcon}
           IconHover={BadgeIcon}
           title="Staff"
-          to="/kelola/staff"
+          to="/kelola/staff?page=1"
           open={open}
         />
         <LinkItem
           IconDefault={LocalOfferOutlinedIcon}
           IconHover={LocalOfferIcon}
           title="Paket"
-          to="/kelola/paket"
+          to="/kelola/paket?page=1"
           open={open}
         />
         <LinkItem
