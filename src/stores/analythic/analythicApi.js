@@ -1,6 +1,7 @@
 import baseApi from '@/stores/baseApi';
 
 export const analythicApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (build) => ({
     getAnalytic: build.query({
       queryFn: async (arg, _queryApi, _extraOptions, fetchWithBQ) => {

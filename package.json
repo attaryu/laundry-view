@@ -21,7 +21,9 @@
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5",
     "recharts": "^2.4.3",
-    "socket.io-client": "^4.6.1"
+    "socket.io-client": "^4.6.1",
+    "sweetalert2": "^11.4.8",
+    "sweetalert2-react-content": "^5.0.7"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

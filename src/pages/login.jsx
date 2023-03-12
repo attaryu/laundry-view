@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -7,8 +7,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import Spinner from '@/components/Spinner';
 
-import { useLoginMutation } from '@/stores/auth/authApi';
 import { pushUserData } from '@/stores/auth/auth';
+import { useLoginMutation } from '@/stores/auth/authApi';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -26,7 +26,7 @@ export default function Login() {
       router.push('/');
       dispatch(pushUserData({ ...data }));
     }
-  });
+  }, [isSuccess]);
 
   function loginHandler(e) {
     e.preventDefault();

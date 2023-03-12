@@ -10,7 +10,11 @@ export default function LinkItem({ IconDefault, IconHover, title, to, open }) {
   const [hover, setHover] = useState(false);
   let thisPage = false;
 
-  if (new RegExp(`${router.pathname}$`).test(to)) {
+  if (new RegExp(`${router.pathname}`).test(to) && router.pathname !== '/') {
+    thisPage = true;
+  }
+
+  if (router.pathname === to) {
     thisPage = true;
   }
 
