@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import Link from 'next/link';
 import Head from 'next/head';
@@ -178,14 +178,12 @@ function MailBox() {
   );
 }
 
-function Item({ count, title }) {
-  return (
-    <li className="flex h-24 w-24 flex-col items-center justify-center gap-3 rounded-lg bg-white shadow-xl">
-      <span className="text-2xl font-semibold">{count}</span>
-      <h1 className="text-xs font-semibold">{title}</h1>
-    </li>
-  );
-}
+const Item = memo(({ count, title }) => (
+  <li className="flex h-24 w-24 flex-col items-center justify-center gap-3 rounded-lg bg-white shadow-xl">
+    <span className="text-2xl font-semibold">{count}</span>
+    <h1 className="text-xs font-semibold">{title}</h1>
+  </li>
+));
 
 Item.propTypes = {
   count: PropTypes.number.isRequired,

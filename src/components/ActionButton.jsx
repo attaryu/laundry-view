@@ -1,22 +1,23 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
+import Link from 'next/link';
+
 import EditIcon from '@mui/icons-material/Edit';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
-export default function ActionButton({ type, handler }) {
+export default function ActionButton({ type, handler, href }) {
   const [hover, setHover] = useState(false);
 
   if (type === 'edit') {
     return (
-      <button
-        type="button"
+      <Link
+        href={href}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        onClick={handler}
         className="bg-amber-50 p-0.5 rounded-sm outline outline-1 text-amber-400 outline-amber-400"
         title="Edit"
       >
@@ -25,7 +26,7 @@ export default function ActionButton({ type, handler }) {
         ) : (
           <EditOutlinedIcon fontSize="small" />
         )}
-      </button>
+      </Link>
     );
   }
 
@@ -49,5 +50,11 @@ export default function ActionButton({ type, handler }) {
 
 ActionButton.propTypes = {
   type: PropTypes.oneOf(['edit', 'delete']).isRequired,
-  handler: PropTypes.func.isRequired,
+  handler: PropTypes.func,
+  href: PropTypes.string,
+};
+
+ActionButton.defaultProps = {
+  handler: null,
+  href: null,
 };

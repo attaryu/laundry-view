@@ -23,6 +23,7 @@ export const analythicApi = baseApi.injectEndpoints({
           error: totalData.error,
         };
       },
+      providesTags: ['analisis'],
     }),
   }),
 });

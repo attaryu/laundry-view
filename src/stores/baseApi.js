@@ -4,13 +4,13 @@ import { pushUserData } from '@/stores/auth/auth';
 
 const baseQueryOrigin = fetchBaseQuery({
   baseUrl: 'http://localhost:3030',
+  credentials: 'include',
   prepareHeaders: (headers) => {
     const token = sessionStorage.getItem('request_token');
     if (token) headers.set('authorization', `Bearer ${token}`);
 
     return headers;
   },
-  credentials: 'include',
 });
 
 async function baseQuery(args, api, extraOptions) {
@@ -31,6 +31,7 @@ async function baseQuery(args, api, extraOptions) {
 const baseApi = createApi({
   reducerPath: 'laundry-service',
   baseQuery,
+  tagTypes: ['pelanggan', 'analisis'],
   endpoints: () => ({}),
 });
 

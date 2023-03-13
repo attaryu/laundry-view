@@ -1,16 +1,18 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 
 import ActionButton from '@/components/ActionButton';
 import DropDown from '@/components/DropDown';
+import Error from '@/components/Error';
 import Loading from '@/components/Loading';
 import PaginationButton from '@/components/PaginationButton';
 import SearchBar from '@/components/SearchBar';
 
-import { useGetCustomerQuery } from '@/stores/customer/customerApi';
+import { useDeleteCustomerMutation, useGetCustomerQuery } from '@/stores/customer/customerApi';
 
+import MySwal from '@/lib/alert';
 import firstToUpperCase from '@/lib/firstToUpperCase';
 
 export default function Customer() {
@@ -25,17 +27,59 @@ export default function Customer() {
     { name: 'Perempuan', value: 'perempuan' },
   ];
 
-  const { isLoading, data, isError, error } = useGetCustomerQuery({
+  const {
+    isLoading: isLoadingCustomer,
+    data: dataCustomer,
+    isError: isErrorCustomer,
+    error: errorCustomer,
+  } = useGetCustomerQuery({
     page: router.query.page,
     gender: router.query.gender,
     search: router.query.search,
   });
+  const [deleteCustomer, {
+    isSuccess: deleteIsSuccess,
+    isError: deleteIsError,
+    error: deleteError,
+  }] = useDeleteCustomerMutation();
 
-  function goEdit(id) {
-    return () => router.push(`/kelola/pelanggan/${id}/edit`);
+  useEffect(() => {
+    if (deleteIsSuccess) {
+      MySwal.hideLoading();
+      MySwal.fire('Berhasil', 'Berhasil menghapus data pelanggan', 'success');
+    }
+
+    if (deleteIsError) {
+      MySwal.hideLoading();
+      MySwal.fire('Gagal', deleteError?.data?.message, 'error');
+    }
+  }, [deleteIsSuccess, deleteIsError]);
+
+  function goDelete(id, name) {
+    return () => {
+      MySwal.fire({
+        title: `Hapus Pelanggan ${name}?`,
+        text: 'Seluruh data yang bersangkutan akan ikut terhapus',
+        icon: 'question',
+        iconColor: '#fbbf24',
+        showCancelButton: true,
+        cancelButtonText: 'Batal',
+        cancelButtonColor: '#4ade80',
+        showConfirmButton: true,
+        confirmButtonText: 'Hapus',
+        confirmButtonColor: '#ef4444',
+        focusCancel: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          MySwal.fire('Loading');
+          MySwal.showLoading();
+          deleteCustomer(id);
+        }
+      });
+    };
   }
 
-  if (isLoading) {
+  if (isLoadingCustomer) {
     return (
       <main className="grid h-screen w-full place-items-center">
         <Loading />
@@ -43,12 +87,10 @@ export default function Customer() {
     );
   }
 
-  if (isError) {
+  if (isErrorCustomer) {
     return (
       <main className="grid h-screen w-full place-items-center">
-        <div className="grid h-screen w-full place-items-center gap-5 bg-zinc-100 px-7 py-5">
-          <p className="font-semibold opacity-40">{error?.data?.message}</p>
-        </div>
+        <Error message={errorCustomer?.data?.message} />
       </main>
     );
   }
@@ -64,6 +106,8 @@ export default function Customer() {
         </header>
 
         <main className="mt-10">
+
+          {/* filter */}
           <div className="mt-2 flex w-full items-center justify-end gap-3">
             <DropDown
               title="Jenis Kelamin"
@@ -75,8 +119,9 @@ export default function Customer() {
             <SearchBar value={search} handler={setSearch} />
           </div>
 
-          {data ? (
+          {dataCustomer ? (
             <>
+              {/* tabel */}
               <table className="mt-5 mb-3 w-full table-auto rounded-lg outline outline-[1.5px] outline-zinc-200">
                 <thead className="border-b-[1.5px] bg-zinc-100 outline-zinc-200">
                   <tr>
@@ -88,8 +133,8 @@ export default function Customer() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.payload.map((customer) => (
-                    <tr key={Math.random()}>
+                  {dataCustomer.payload.map((customer) => (
+                    <tr key={customer.id}>
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(customer.nama)}</td>
                       <td className="p-2 px-2">
                         <span
@@ -105,20 +150,21 @@ export default function Customer() {
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(customer.alamat)}</td>
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(customer.telepon)}</td>
                       <td className="flex gap-2 p-2 px-2 text-sm">
-                        <ActionButton type="edit" handler={goEdit(customer.id)} />
-                        <ActionButton type="delete" handler={goEdit(customer.id)} />
+                        <ActionButton type="edit" href={`/kelola/pelanggan/${customer.id}/edit`} />
+                        <ActionButton type="delete" handler={goDelete(customer.id, customer.nama)} />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
 
+              {/* total data */}
               <small className="font-medium text-zinc-500">
                 Total
                 {' '}
-                {data.total}
+                {dataCustomer.total}
                 {' '}
-                data
+                pelanggan
               </small>
             </>
           ) : (
@@ -128,9 +174,10 @@ export default function Customer() {
           )}
         </main>
 
-        {data && data.all_page > 1 ? (
+        {/* pagination button */}
+        {dataCustomer && dataCustomer.all_page > 1 ? (
           <footer className="mt-5 flex items-center gap-3">
-            <PaginationButton totalPage={data.all_page} page={data.page} />
+            <PaginationButton totalPage={dataCustomer.all_page} page={dataCustomer.page} />
           </footer>
         ) : null}
       </div>

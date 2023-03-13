@@ -8,7 +8,7 @@ import { memo } from 'react';
   [1] 2 3 ... 7
   1 [2] 3 4 ... 7
   1 2 [3] 4 5 ... 7
-  1 ... 3 [4] 5 ... 7
+  1 ... 2 3 [4] 5 6 ... 7
         1 ... 3 4 [5] 6 7
           1 ... 4 5 [6] 7
             1 ... 5 6 [7]
@@ -48,7 +48,7 @@ function PaginationButton({ page, totalPage }) {
         </>
       ) : null}
       {[...Array(renderButton)].map((x, i) => (
-        <Linked page={i + startPage} />
+        <Linked key={Math.random()} page={i + startPage} />
       ))}
       {lastPage < totalPage ? (
         <>
