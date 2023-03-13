@@ -130,7 +130,9 @@ export default function Outlet() {
                           {firstToUpperCase(outlet.nama)}
                         </Link>
                       </td>
-                      <td className="p-2 px-2 text-sm">{firstToUpperCase(outlet.alamat)}</td>
+                      <td className="p-2 px-2 text-sm">
+                        <address className="not-italic">{firstToUpperCase(outlet.alamat)}</address>
+                      </td>
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(outlet.telepon)}</td>
                       <td className="flex gap-2 p-2 px-2 text-sm">
                         <ActionButton type="edit" href={`/kelola/outlet/${outlet.id}/edit`} />
