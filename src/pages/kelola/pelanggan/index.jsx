@@ -102,7 +102,7 @@ export default function Customer() {
       </Head>
       <div className="w-full p-6">
         <header>
-          <h1 className="text-xl font-bold">Daftar Pelanggan</h1>
+          <h1 className="text-2xl font-bold">Daftar Pelanggan</h1>
         </header>
 
         <main className="mt-10">
