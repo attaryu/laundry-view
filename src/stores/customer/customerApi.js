@@ -29,6 +29,7 @@ export const customerApi = baseApi.injectEndpoints({
     getSpecificCustomer: build.query({
       query: (id) => `/customer/${id}`,
       transformResponse: (response) => response.payload,
+      providesTags: (result, error, args) => ([{ type: 'pelanggan', id: args }]),
     }),
 
     editCustomer: build.mutation({

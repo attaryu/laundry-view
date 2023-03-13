@@ -34,6 +34,7 @@ const outletApi = baseApi.injectEndpoints({
     getDetailOutlet: build.query({
       query: (id) => `/outlet/${id}`,
       transformResponse: (response) => response.payload,
+      providesTags: (result, error, args) => ([{ type: 'outlet', id: args }]),
     }),
 
     editOutlet: build.mutation({
