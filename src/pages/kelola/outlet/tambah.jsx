@@ -11,7 +11,7 @@ import MySwal from '@/lib/alert';
 export default function Tambah() {
   const router = useRouter();
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const [createOutlet, {
     isLoading,
@@ -29,6 +29,7 @@ export default function Tambah() {
     if (isSuccess) {
       MySwal.hideLoading();
       MySwal.fire('Berhasil', 'Data sudah ditambahkan', 'success');
+      reset();
     }
 
     if (isError) {
@@ -38,7 +39,11 @@ export default function Tambah() {
   }, [isLoading, isSuccess, isError]);
 
   function addOutlet(body) {
-    createOutlet(body);
+    createOutlet({
+      nama: body.nama,
+      telepon: body.telepon,
+      alamat: `${body.jalan}, ${body.desa}, ${body.kecamatan}, ${body.kota}`,
+    });
   }
 
   return (
@@ -71,57 +76,125 @@ export default function Tambah() {
                 },
               })}
             />
-            {errors?.nama ? <small className="text-xs text-red-600">{errors.nama.message}</small> : null}
 
-            <div className="flex gap-3">
-              {/* input telepon */}
-              <div className="w-full">
-                <input
-                  type="text"
-                  placeholder="Telepon"
-                  className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-                  {...register('telepon', {
-                    minLength: {
-                      message: 'Telepon minimal 10 karakter',
-                      value: 10,
-                    },
-                    maxLength: {
-                      message: 'Telepon maksimal 20 karakter',
-                      value: 20,
-                    },
-                    required: {
-                      message: 'Telepon tidak boleh kosong',
-                      value: true,
-                    },
-                  })}
-                />
-                {errors?.telepon ? <small className="text-xs text-red-600">{errors.telepon.message}</small> : null}
-              </div>
+            {/* input telepon */}
+            <input
+              type="text"
+              placeholder="Telepon"
+              className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
+              {...register('telepon', {
+                minLength: {
+                  message: 'Telepon minimal 10 karakter',
+                  value: 10,
+                },
+                maxLength: {
+                  message: 'Telepon maksimal 15 karakter',
+                  value: 15,
+                },
+                required: {
+                  message: 'Telepon tidak boleh kosong',
+                  value: true,
+                },
+              })}
+            />
 
-              {/* input alamat */}
-              <div className="w-full">
-                <input
-                  type="text"
-                  placeholder="Alamat"
-                  className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-                  {...register('alamat', {
-                    minLength: {
-                      message: 'Alamat minimal 10 karakter',
-                      value: 10,
-                    },
-                    maxLength: {
-                      message: 'Alamat maksimal 20 karakter',
-                      value: 20,
-                    },
-                    required: {
-                      message: 'Alamat tidak boleh kosong',
-                      value: true,
-                    },
-                  })}
-                />
-                {errors?.alamat ? <small className="text-xs text-red-600">{errors.alamat.message}</small> : null}
-              </div>
+            {/* input alamat */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* input jalan */}
+              <input
+                type="text"
+                placeholder="Jalan"
+                className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
+                {...register('jalan', {
+                  minLength: {
+                    message: 'Jalan minimal 3 karakter',
+                    value: 3,
+                  },
+                  maxLength: {
+                    message: 'Jalan maksimal 20 karakter',
+                    value: 20,
+                  },
+                  required: {
+                    message: 'Jalan tidak boleh kosong',
+                    value: true,
+                  },
+                })}
+              />
+
+              {/* input desa */}
+              <input
+                type="text"
+                placeholder="Desa"
+                className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
+                {...register('desa', {
+                  minLength: {
+                    message: 'Desa minimal 3 karakter',
+                    value: 3,
+                  },
+                  maxLength: {
+                    message: 'Desa maksimal 20 karakter',
+                    value: 20,
+                  },
+                  required: {
+                    message: 'Desa tidak boleh kosong',
+                    value: true,
+                  },
+                })}
+              />
+
+              {/* input kecamatan */}
+              <input
+                type="text"
+                placeholder="Kecamatan"
+                className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
+                {...register('kecamatan', {
+                  minLength: {
+                    message: 'Kecamatan minimal 3 karakter',
+                    value: 3,
+                  },
+                  maxLength: {
+                    message: 'Kecamatan maksimal 20 karakter',
+                    value: 20,
+                  },
+                  required: {
+                    message: 'Kecamatan tidak boleh kosong',
+                    value: true,
+                  },
+                })}
+              />
+
+              {/* input kota */}
+              <input
+                type="text"
+                placeholder="Kota"
+                className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
+                {...register('kota', {
+                  minLength: {
+                    message: 'Kota minimal 3 karakter',
+                    value: 3,
+                  },
+                  maxLength: {
+                    message: 'Kota maksimal 20 karakter',
+                    value: 20,
+                  },
+                  required: {
+                    message: 'Kota tidak boleh kosong',
+                    value: true,
+                  },
+                })}
+              />
             </div>
+
+            {errors ? (
+              <small className="text-xs text-red-600">
+                {errors.nama?.message
+                || errors.telepon?.message
+                || errors.jalan?.message
+                || errors.desa?.message
+                || errors.kecamatan?.message
+                || errors.kota?.message}
+              </small>
+            ) : null}
           </div>
 
           {/* back and submit button */}
