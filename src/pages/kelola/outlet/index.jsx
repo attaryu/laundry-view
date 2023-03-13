@@ -1,5 +1,5 @@
 export default function Outlet() {
   return (
-    <div>Outlet</div>
+    <main className="w-full p-7">Outlet</main>
   );
 }
