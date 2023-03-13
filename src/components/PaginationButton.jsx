@@ -14,7 +14,7 @@ import { memo } from 'react';
             1 ... 5 6 [7]
 */
 
-function PaginationButton({ page, totalPage }) {
+function PaginationButton({ page, totalPage, url }) {
   let startPage = page - 2;
   let lastPage = page + 2;
   let renderButton = 5;
@@ -43,17 +43,17 @@ function PaginationButton({ page, totalPage }) {
     <div className="flex gap-3 w-full items-center justify-center">
       {startPage > 1 ? (
         <>
-          <Linked page={1} />
+          <Linked page={1} url={url} />
           <Dot />
         </>
       ) : null}
       {[...Array(renderButton)].map((x, i) => (
-        <Linked key={Math.random()} page={i + startPage} />
+        <Linked key={Math.random()} page={i + startPage} url={url} />
       ))}
       {lastPage < totalPage ? (
         <>
           <Dot />
-          <Linked page={totalPage} />
+          <Linked page={totalPage} url={url} />
         </>
       ) : null}
     </div>
@@ -65,15 +65,16 @@ export default memo(PaginationButton);
 PaginationButton.propTypes = {
   page: PropTypes.number.isRequired,
   totalPage: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
-function Linked({ page }) {
+function Linked({ page, url }) {
   const router = useRouter();
   const thisPage = Number(router.query.page) === page;
 
   return (
     <Link
-      href={`/kelola/pelanggan?page=${page}`}
+      href={`${url}?page=${page}`}
       className={`w-7 h-7 grid place-items-center rounded-sm bg-amber-300 ${thisPage ? 'bg-amber-400 outline outline-1' : ''}`}
     >
       {page}
@@ -83,6 +84,7 @@ function Linked({ page }) {
 
 Linked.propTypes = {
   page: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 function Dot() {

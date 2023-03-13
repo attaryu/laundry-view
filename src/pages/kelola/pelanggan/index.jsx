@@ -177,7 +177,7 @@ export default function Customer() {
         {/* pagination button */}
         {dataCustomer && dataCustomer.all_page > 1 ? (
           <footer className="mt-5 flex items-center gap-3">
-            <PaginationButton totalPage={dataCustomer.all_page} page={dataCustomer.page} />
+            <PaginationButton totalPage={dataCustomer.all_page} page={dataCustomer.page} url="/kelola/pelanggan" />
           </footer>
         ) : null}
       </div>

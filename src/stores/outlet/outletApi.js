@@ -9,11 +9,19 @@ const outletApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['outlet'],
+      invalidatesTags: ['outlet', 'analisis'],
     }),
 
     getOutlet: build.query({
-      query: ({ page = 1, search }) => `/outlet?page=${page}${search?.length !== 0 ? `&search=${search}` : ''}`,
+      query: ({ page = 1, search }) => {
+        let query = '';
+
+        if (search && search.length !== 0) {
+          query = `&search=${search}`;
+        }
+
+        return `/outlet?page=${page}${query}`;
+      },
       providesTags: (result) => {
         if (result) {
           const tags = result.payload.map((data) => ({ type: 'outlet', id: data.id }));
@@ -42,7 +50,7 @@ const outletApi = baseApi.injectEndpoints({
         url: `outlet/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, args) => ([{ type: 'outlet', id: args }]),
+      invalidatesTags: (result, error, args) => ([{ type: 'outlet', id: args }, 'analisis']),
     }),
   }),
 });
