@@ -125,7 +125,11 @@ export default function Outlet() {
                 <tbody>
                   {getData.payload.map((outlet) => (
                     <tr key={outlet.id}>
-                      <td className="p-2 px-2 text-sm">{firstToUpperCase(outlet.nama)}</td>
+                      <td className="p-2 px-2 text-sm font-semibold">
+                        <Link href={`/kelola/outlet/${outlet.id}`} className="hover:underline">
+                          {firstToUpperCase(outlet.nama)}
+                        </Link>
+                      </td>
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(outlet.alamat)}</td>
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(outlet.telepon)}</td>
                       <td className="flex gap-2 p-2 px-2 text-sm">

@@ -7,6 +7,7 @@ import Sidebar from '@/components/Sidebar';
 
 import store from '@/stores/store';
 
+import 'moment/locale/id';
 import '../styles/global.css';
 
 const outfit = Outfit({

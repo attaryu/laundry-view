@@ -1,6 +1,12 @@
 export default function firstToUpperCase(string) {
   // params 'laki_laki'
-  const removeUnderline = string.split('_');
+  let removeUnderline = [];
+
+  if (/[_]/.test(string)) {
+    removeUnderline = string.split('_');
+  } else {
+    removeUnderline = string.split(' ');
+  }
   // result: ['laki', 'laki'],
   const splitAllWord = removeUnderline.map((word) => word.split(''));
   // result: [['l', 'a', 'k', 'i'], ['l', 'a', 'k', 'i']]
