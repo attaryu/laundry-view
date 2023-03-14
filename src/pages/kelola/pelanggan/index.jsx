@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Head from 'next/head';
 
@@ -18,11 +18,7 @@ import firstToUpperCase from '@/lib/firstToUpperCase';
 export default function Customer() {
   const router = useRouter();
 
-  const [jenisKelamin, setJenisKelamin] = useState('');
-  const [search, setSearch] = useState('');
-
   const options = [
-    { name: 'Semua', value: '' },
     { name: 'Laki Laki', value: 'laki_laki' },
     { name: 'Perempuan', value: 'perempuan' },
   ];
@@ -113,10 +109,8 @@ export default function Customer() {
               title="Jenis Kelamin"
               param="gender"
               options={options}
-              value={jenisKelamin}
-              changeHandler={setJenisKelamin}
             />
-            <SearchBar value={search} handler={setSearch} />
+            <SearchBar />
           </div>
 
           {dataCustomer ? (

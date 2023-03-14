@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function DropDown({ title, param, options, value, changeHandler }) {
+export default function DropDown({ title, param, options }) {
   const router = useRouter();
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     if (value !== '') {
@@ -16,7 +17,7 @@ export default function DropDown({ title, param, options, value, changeHandler }
 
   useEffect(() => {
     if (router.query[param]) {
-      changeHandler(router.query[param]);
+      setValue(router.query[param]);
     }
   }, [router.query[param]]);
 
@@ -29,9 +30,10 @@ export default function DropDown({ title, param, options, value, changeHandler }
       </small>
       <select
         className="text-xs outline font-medium cursor-pointer outline-none"
-        onChange={(e) => changeHandler(e.target.value)}
+        onChange={(e) => setValue(e.target.value)}
         value={value}
       >
+        <option value="">Semua</option>
         {options.map((op) => (
           <option
             key={Math.random()}
@@ -52,6 +54,4 @@ DropDown.propTypes = {
     value: PropTypes.string,
     name: PropTypes.string,
   })).isRequired,
-  value: PropTypes.string.isRequired,
-  changeHandler: PropTypes.func.isRequired,
 };

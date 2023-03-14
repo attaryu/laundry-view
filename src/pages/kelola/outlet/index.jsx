@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -10,15 +10,13 @@ import Loading from '@/components/Loading';
 import PaginationButton from '@/components/PaginationButton';
 import SearchBar from '@/components/SearchBar';
 
-import { useGetOutletQuery, useDeleteOutletMutation } from '@/stores/outlet/outletApi';
+import { useDeleteOutletMutation, useGetOutletQuery } from '@/stores/outlet/outletApi';
 
 import MySwal from '@/lib/alert';
 import firstToUpperCase from '@/lib/firstToUpperCase';
 
 export default function Outlet() {
   const router = useRouter();
-
-  const [search, setSearch] = useState('');
 
   const {
     isLoading: getIsLoading,
@@ -107,7 +105,7 @@ export default function Outlet() {
 
           {/* filter */}
           <div className="mt-2 flex w-full items-center justify-end gap-3">
-            <SearchBar value={search} handler={setSearch} />
+            <SearchBar />
           </div>
 
           {getData ? (

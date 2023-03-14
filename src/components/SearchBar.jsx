@@ -1,11 +1,11 @@
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import SearchIcon from '@mui/icons-material/Search';
 
-export default function SearchBar({ value, handler }) {
+export default function SearchBar() {
   const router = useRouter();
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     if (value !== '') {
@@ -18,7 +18,7 @@ export default function SearchBar({ value, handler }) {
 
   useEffect(() => {
     if (router.query.search) {
-      handler(router.query.search);
+      setValue(router.query.search);
     }
   }, [router.query.search]);
 
@@ -33,15 +33,10 @@ export default function SearchBar({ value, handler }) {
         type="text"
         id="search"
         value={value}
-        onChange={(e) => handler(e.target.value)}
+        onChange={(e) => setValue(e.target.value)}
         className="bg-inherit w-32 outline-none text-xs"
         placeholder="Search"
       />
     </label>
   );
 }
-
-SearchBar.propTypes = {
-  value: PropTypes.string.isRequired,
-  handler: PropTypes.func.isRequired,
-};

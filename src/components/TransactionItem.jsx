@@ -4,7 +4,7 @@ import Moment from 'react-moment';
 
 export default function TransactionItem({ total, codeInvoice, date }) {
   return (
-    <div className="p-6 bg-gradient-to-tr from-amber-200 to-amber-100 rounded-xl flex justify-between items-center shadow-lg">
+    <div className="p-6 bg-amber-200 border-2 border-amber-300 rounded-xl flex justify-between items-center shadow-lg">
       <div className="flex flex-col gap-1">
         <p className="font-bold text-lg">{total.toLocaleString('id-ID', { currency: 'IDR', style: 'currency' })}</p>
         <small className="font-medium text-xs opacity-70">{codeInvoice}</small>

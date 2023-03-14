@@ -4,7 +4,10 @@ import { useRouter } from 'next/router';
 
 import Head from 'next/head';
 
-import { useCreateOutletMutation } from '@/stores/outlet/outletApi';
+import Loading from '@/components/Loading';
+
+import { useRegisterMutation } from '@/stores/auth/authApi';
+import { useGetNameOutletQuery } from '@/stores/outlet/outletApi';
 
 import MySwal from '@/lib/alert';
 
@@ -13,47 +16,68 @@ export default function Tambah() {
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
-  const [createOutlet, {
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  }] = useCreateOutletMutation();
+  const {
+    isSuccess: outletIsSuccess,
+    isLoading: outletIsLoading,
+    data: outletData,
+  } = useGetNameOutletQuery();
+
+  const [registerStaff, {
+    isSuccess: registerIsSuccess,
+    isError: registerIsError,
+    error: registerError,
+  }] = useRegisterMutation();
 
   useEffect(() => {
-    if (isLoading) {
-      MySwal.fire('Loading');
-      MySwal.showLoading();
-    }
-
-    if (isSuccess) {
+    if (registerIsSuccess) {
       MySwal.hideLoading();
       MySwal.fire('Berhasil', 'Data sudah ditambahkan', 'success');
       reset();
     }
 
-    if (isError) {
+    if (registerIsError) {
       MySwal.hideLoading();
-      MySwal.fire('Gagal', error.data.message, 'error');
+      MySwal.fire('Gagal', registerError.data.message, 'registerError');
     }
-  }, [isLoading, isSuccess, isError]);
+  }, [registerIsSuccess, registerIsError]);
 
-  function addOutlet(body) {
-    createOutlet({
-      nama: body.nama,
-      telepon: body.telepon,
-      alamat: `${body.jalan}, ${body.desa}, ${body.kecamatan}, ${body.kota}`,
-    });
+  function registerHandler(body) {
+    if (body.password !== body.repeatPassword) {
+      MySwal.fire('Peringatan', 'Password harus sama', 'warning');
+      return;
+    }
+
+    if (body.role === 'Role') {
+      MySwal.fire('Peringatan', 'Pilih role yang tersedia', 'warning');
+      return;
+    }
+
+    if (body.id_outlet === 'Outlet') {
+      MySwal.fire('Peringatan', 'Pilih outlet yang tersedia', 'warning');
+      return;
+    }
+
+    MySwal.fire('Loading');
+    MySwal.showLoading();
+    registerStaff(body);
+  }
+
+  if (outletIsLoading) {
+    return (
+      <main className="w-full h-screen grid place-items-center">
+        <Loading />
+      </main>
+    );
   }
 
   return (
     <>
       <Head>
-        <title>Tambah Outlet</title>
+        <title>Tambah Staff</title>
       </Head>
       <main className="w-full h-screen bg-gradient-to-br from-emerald-400 to-emerald-600 grid place-items-center">
-        <form className="bg-white p-8 rounded-lg shadow-lg w-1/2" onSubmit={handleSubmit((data) => addOutlet(data))}>
-          <h1 className="font-bold text-xl text-center">Tambah Outlet</h1>
+        <form className="bg-white p-8 rounded-lg shadow-lg w-1/2" onSubmit={handleSubmit((data) => registerHandler(data))}>
+          <h1 className="font-bold text-xl text-center">Tambah Staff</h1>
 
           <div className="w-full flex gap-3 flex-col my-10">
             {/* input nama */}
@@ -61,7 +85,7 @@ export default function Tambah() {
               type="text"
               placeholder="Nama"
               className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-              {...register('nama', {
+              {...register('name', {
                 minLength: {
                   message: 'Nama minimal 5 karakter',
                   value: 5,
@@ -77,122 +101,104 @@ export default function Tambah() {
               })}
             />
 
-            {/* input telepon */}
+            {/* input username */}
             <input
               type="text"
-              placeholder="Telepon"
+              placeholder="Username"
               className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-              {...register('telepon', {
+              {...register('username', {
                 minLength: {
-                  message: 'Telepon minimal 10 karakter',
-                  value: 10,
+                  message: 'Username minimal 5 karakter',
+                  value: 5,
                 },
                 maxLength: {
-                  message: 'Telepon maksimal 15 karakter',
+                  message: 'Username maksimal 15 karakter',
                   value: 15,
                 },
                 required: {
-                  message: 'Telepon tidak boleh kosong',
+                  message: 'Username tidak boleh kosong',
                   value: true,
                 },
               })}
             />
 
-            {/* input alamat */}
             <div className="grid grid-cols-2 gap-3">
-              {/* input jalan */}
+              {/* input password */}
               <input
                 type="text"
-                placeholder="Jalan"
+                placeholder="Password"
                 className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-                {...register('jalan', {
+                {...register('password', {
                   minLength: {
-                    message: 'Jalan minimal 3 karakter',
-                    value: 3,
+                    message: 'Password minimal 8 karakter',
+                    value: 8,
                   },
                   maxLength: {
-                    message: 'Jalan maksimal 20 karakter',
+                    message: 'Password maksimal 20 karakter',
                     value: 20,
                   },
                   required: {
-                    message: 'Jalan tidak boleh kosong',
+                    message: 'Password tidak boleh kosong',
                     value: true,
                   },
                 })}
               />
 
-              {/* input desa */}
+              {/* input repeat password */}
               <input
                 type="text"
-                placeholder="Desa"
+                placeholder="Ulangi password"
                 className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-                {...register('desa', {
-                  minLength: {
-                    message: 'Desa minimal 3 karakter',
-                    value: 3,
-                  },
-                  maxLength: {
-                    message: 'Desa maksimal 20 karakter',
-                    value: 20,
-                  },
+                {...register('repeatPassword', {
                   required: {
-                    message: 'Desa tidak boleh kosong',
+                    message: 'Repeat password tidak boleh kosong',
                     value: true,
                   },
                 })}
               />
 
-              {/* input kecamatan */}
-              <input
-                type="text"
-                placeholder="Kecamatan"
+              {/* input role */}
+              <select
+                defaultValue="Role"
                 className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-                {...register('kecamatan', {
-                  minLength: {
-                    message: 'Kecamatan minimal 3 karakter',
-                    value: 3,
-                  },
-                  maxLength: {
-                    message: 'Kecamatan maksimal 20 karakter',
-                    value: 20,
-                  },
+                {...register('role', {
                   required: {
-                    message: 'Kecamatan tidak boleh kosong',
+                    message: 'Role tidak boleh kosong',
                     value: true,
                   },
                 })}
-              />
+              >
+                <option disabled>Role</option>
+                <option value="kasir">Kasir</option>
+                <option value="manajer">Manajer</option>
+              </select>
 
-              {/* input kota */}
-              <input
-                type="text"
-                placeholder="Kota"
+              {/* input outlet */}
+              <select
+                defaultValue="Outlet"
                 className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
-                {...register('kota', {
-                  minLength: {
-                    message: 'Kota minimal 3 karakter',
-                    value: 3,
-                  },
-                  maxLength: {
-                    message: 'Kota maksimal 20 karakter',
-                    value: 20,
-                  },
+                {...register('id_outlet', {
                   required: {
-                    message: 'Kota tidak boleh kosong',
+                    message: 'Outlet tidak boleh kosong',
                     value: true,
                   },
                 })}
-              />
+              >
+                <option disabled>Outlet</option>
+                {outletIsSuccess ? outletData.map((data) => (
+                  <option key={data.id} value={data.id}>{data.nama}</option>
+                )) : null}
+              </select>
             </div>
 
             {errors ? (
               <small className="text-xs text-red-600">
                 {errors.nama?.message
-                || errors.telepon?.message
-                || errors.jalan?.message
-                || errors.desa?.message
-                || errors.kecamatan?.message
-                || errors.kota?.message}
+                || errors.username?.message
+                || errors.password?.message
+                || errors.repeatPassword?.message
+                || errors.role?.message
+                || errors.outlet?.message}
               </small>
             ) : null}
           </div>

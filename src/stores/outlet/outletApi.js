@@ -53,6 +53,18 @@ const outletApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: (result, error, args) => ([{ type: 'outlet', id: args }, 'analisis']),
     }),
+
+    getNameOutlet: build.query({
+      query: () => '/outlet/nama',
+      transformResponse: (response) => response.payload,
+      providesTags: (result) => {
+        if (result) {
+          const tags = result.map((data) => ({ type: 'outlet', id: data.id }));
+          return ['outlet', ...tags];
+        }
+        return ['outlet'];
+      },
+    }),
   }),
 });
 
@@ -62,4 +74,5 @@ export const {
   useGetDetailOutletQuery,
   useEditOutletMutation,
   useDeleteOutletMutation,
+  useGetNameOutletQuery,
 } = outletApi;
