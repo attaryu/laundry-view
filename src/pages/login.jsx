@@ -97,7 +97,7 @@ export default function Login() {
 
             <button
               type="submit"
-              className="mt-5 flex w-full items-center justify-center gap-5 rounded-md bg-amber-500 py-2.5 font-semibold text-white duration-300 hover:bg-slate-800"
+              className="mt-5 flex w-full items-center justify-center gap-5 rounded-md bg-amber-500 py-2.5 font-semibold text-white duration-300 hover:bg-amber-400"
             >
               {isLoading ? (
                 <>

@@ -31,7 +31,7 @@ async function baseQuery(args, api, extraOptions) {
 const baseApi = createApi({
   reducerPath: 'laundry-service',
   baseQuery,
-  tagTypes: ['pelanggan', 'analisis', 'outlet', 'user', 'paket'],
+  tagTypes: ['pelanggan', 'analisis', 'outlet', 'user', 'paket', 'transaksi'],
   endpoints: () => ({}),
 });
 

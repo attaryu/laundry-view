@@ -13,8 +13,6 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
-import MarkunreadMailboxIcon from '@mui/icons-material/MarkunreadMailbox';
-import MarkunreadMailboxOutlinedIcon from '@mui/icons-material/MarkunreadMailboxOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -51,6 +49,7 @@ export default function Sidebar() {
 
     if (isError) {
       logout();
+      router.push('/login');
     }
   }, [isSuccess, isSuccessLogout, isError]);
 
@@ -141,16 +140,16 @@ export default function Sidebar() {
           IconDefault={ReceiptLongOutlinedIcon}
           IconHover={ReceiptLongIcon}
           title="Transaksi"
-          to="/transaksi"
+          to="/transaksi?page=1"
           open={open}
         />
-        <LinkItem
+        {/* <LinkItem
           IconDefault={MarkunreadMailboxOutlinedIcon}
           IconHover={MarkunreadMailboxIcon}
           title="Kotak Surat"
           to="/kotak-surat"
           open={open}
-        />
+        /> */}
         <LinkItem
           IconDefault={DescriptionOutlinedIcon}
           IconHover={DescriptionIcon}

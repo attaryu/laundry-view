@@ -25,6 +25,18 @@ export const packageApi = baseApi.injectEndpoints({
     getSpecificPackage: build.query({
       query: (id) => `/package/${id}`,
       transformResponse: (response) => response.payload,
+      providesTags: (result, error, args) => ([{ type: 'paket', id: args.id }]),
+    }),
+
+    getNamePackage: build.query({
+      query: () => '/package/name',
+      transformResponse: (response) => response.payload,
+      providesTags: (result) => {
+        if (result) {
+          return [{ type: 'paket', id: result.id }];
+        }
+        return ['paket'];
+      },
     }),
 
     addPackage: build.mutation({
@@ -61,4 +73,5 @@ export const {
   useDeletePackageMutation,
   useEditPackageMutation,
   useGetSpecificPackageQuery,
+  useGetNamePackageQuery,
 } = packageApi;
