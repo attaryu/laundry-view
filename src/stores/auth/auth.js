@@ -6,6 +6,7 @@ export const auth = createSlice({
     id: '',
     name: '',
     username: '',
+    id_outlet: '',
     role: '',
   },
   reducers: {
@@ -16,6 +17,7 @@ export const auth = createSlice({
       state.id = action.payload.user.id;
       state.name = action.payload.user.name;
       state.username = action.payload.user.username;
+      state.id_outlet = action.payload.user.id_outlet;
       state.role = roleUpperCase;
     },
   },

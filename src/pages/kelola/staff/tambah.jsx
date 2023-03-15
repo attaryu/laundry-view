@@ -37,7 +37,7 @@ export default function Tambah() {
 
     if (registerIsError) {
       MySwal.hideLoading();
-      MySwal.fire('Gagal', registerError.data.message, 'registerError');
+      MySwal.fire('Gagal', registerError.data.message, 'error');
     }
   }, [registerIsSuccess, registerIsError]);
 
