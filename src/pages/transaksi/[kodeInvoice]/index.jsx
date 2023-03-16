@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -20,7 +21,7 @@ import MySwal from '@/lib/alert';
 export default function DetailTransaksi() {
   const router = useRouter();
   const [skip, setSkip] = useState(true);
-  // const [status, setStatus] = useState(true);
+  const user = useSelector((state) => state.auth);
 
   const {
     isError,
@@ -173,29 +174,41 @@ export default function DetailTransaksi() {
               </div>
 
               <div className="bg-zinc-100 border-2 border-zinc-200 shadow-lg rounded-xl p-2 flex items-center justify-center">
-                <select
-                  value={data.status}
-                  onChange={(e) => changeStatusHandler(data.kode_invoice, e.target.value)}
-                  className="bg-transparent text-lg font-semibold outline outline-1 p-2 rounded-lg"
-                >
-                  <option value="antrian">Antrian</option>
-                  <option value="proses">Proses</option>
-                  <option value="selesai">Selesai</option>
-                  <option value="diambil">Diambil</option>
-                </select>
+                {/admin/gi.test(user.role) ? (
+                  <div className="w-full h-full grid place-items-center">
+                    <p>{firstToUpperCase(data.status)}</p>
+                  </div>
+                ) : (
+                  <select
+                    value={data.status}
+                    onChange={(e) => changeStatusHandler(data.kode_invoice, e.target.value)}
+                    className="bg-transparent text-lg font-semibold outline outline-1 p-2 rounded-lg"
+                  >
+                    <option value="antrian">Antrian</option>
+                    <option value="proses">Proses</option>
+                    <option value="selesai">Selesai</option>
+                    <option value="diambil">Diambil</option>
+                  </select>
+                )}
               </div>
 
               <div className={`${
                 data.lunas ? 'bg-emerald-100 border-[1.5px] border-emerald-300 hover:bg-emerald-200' : 'bg-red-100 border-[1.5px] border-red-300 hover:bg-red-200'
               } shadow-lg rounded-xl p-2`}
               >
-                <button
-                  type="button"
-                  className="w-full h-full text-lg font-semibold"
-                  onClick={() => paidHandler(data.kode_invoice, data.lunas)}
-                >
-                  {data.lunas ? 'Lunas' : 'Belum lunas'}
-                </button>
+                {/admin/gi.test(user.role) ? (
+                  <div className="w-full h-full grid place-items-center">
+                    <p>{data.lunas ? 'Lunas' : 'Belum lunas'}</p>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="w-full h-full text-lg font-semibold"
+                    onClick={() => paidHandler(data.kode_invoice, data.lunas)}
+                  >
+                    {data.lunas ? 'Lunas' : 'Belum lunas'}
+                  </button>
+                )}
               </div>
             </section>
           </main>

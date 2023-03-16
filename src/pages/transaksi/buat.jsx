@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 import Head from 'next/head';
 
@@ -13,6 +14,11 @@ import MySwal from '@/lib/alert';
 
 export default function Tambah() {
   const router = useRouter();
+  const user = useSelector((state) => state.auth);
+
+  if (/admin|manajer/gi.test(user.role)) {
+    router.back();
+  }
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 

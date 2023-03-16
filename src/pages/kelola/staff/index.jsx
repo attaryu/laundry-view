@@ -163,8 +163,12 @@ export default function Staff() {
                   <td className="p-2 px-2 text-sm">{firstToUpperCase(staff.role)}</td>
                   <td className="p-2 px-2 text-sm">{firstToUpperCase(staff.tb_outlet.nama)}</td>
                   <td className="flex gap-2 p-2 px-2 text-sm">
-                    <ActionButton type="edit" href={`/kelola/staff/${staff.id}/edit`} />
-                    <ActionButton type="delete" handler={goDelete(staff.id, staff.name)} />
+                    {staff.role !== 'admin' ? (
+                      <>
+                        <ActionButton type="edit" href={`/kelola/staff/${staff.id}/edit`} />
+                        <ActionButton type="delete" handler={goDelete(staff.id, staff.name)} />
+                      </>
+                    ) : null}
                   </td>
                 </tr>
               ))}

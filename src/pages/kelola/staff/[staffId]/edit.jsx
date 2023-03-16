@@ -38,6 +38,10 @@ export default function Edit() {
     error: updateError,
   }] = useUpdateUserMutation();
 
+  if (/admin/ig.test(getData?.role)) {
+    router.back();
+  }
+
   useEffect(() => {
     if (router.query.staffId) {
       setSkip(false);

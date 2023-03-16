@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import Head from 'next/head';
 import Link from 'next/link';
 
-import Moment from 'react-moment';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Moment from 'react-moment';
 
 import DropDown from '@/components/DropDown';
 import Error from '@/components/Error';
@@ -23,6 +24,7 @@ import firstToUpperCase from '@/lib/firstToUpperCase';
 
 export default function Transaction() {
   const router = useRouter();
+  const user = useSelector((state) => state.auth);
 
   let options = [];
 
@@ -112,12 +114,14 @@ export default function Transaction() {
       <div className="w-full p-6">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Daftar Transaksi</h1>
-          <Link
-            href="/transaksi/buat"
-            className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
-          >
-            Tambah Transaksi
-          </Link>
+          {user.role === 'kasir' ? (
+            <Link
+              href="/transaksi/buat"
+              className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
+            >
+              Tambah Transaksi
+            </Link>
+          ) : null}
         </header>
 
         <main className="mt-10">
