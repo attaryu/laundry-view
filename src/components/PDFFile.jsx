@@ -16,13 +16,14 @@ const styles = StyleSheet.create({
   },
   header: {
     borderTop: 'none',
+    backgroundColor: '#dcdcdc',
   },
   bold: {
     fontWeight: 'bold',
   },
 
   row1: {
-    width: '30%',
+    width: '27%',
   },
   row2: {
     width: '15%',

@@ -1,5 +1,3 @@
-// import { io } from 'socket.io-client';
-
 import baseApi from '@/stores/baseApi';
 
 export const logApi = baseApi.injectEndpoints({
@@ -7,13 +5,6 @@ export const logApi = baseApi.injectEndpoints({
     getLog: build.query({
       query: () => '/log',
       transformResponse: (response) => response.payload,
-      // onCacheEntryAdded: async (arg, { cacheDataLoaded, updateCachedData }) => {
-      //   const socket = io('http://localhost:3030/');
-
-      //   socket.on('email-path', (newEmail) => {
-
-      //   });
-      // },
     }),
   }),
 });

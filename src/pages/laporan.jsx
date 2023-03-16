@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import Head from 'next/head';
@@ -6,10 +6,12 @@ import { PDFViewer } from '@react-pdf/renderer';
 
 import Error from '@/components/Error';
 import Loading from '@/components/Loading';
+import PDFFile from '@/components/PDFFile';
 
 import { useGetNameOutletQuery } from '@/stores/outlet/outletApi';
 import { useTransactionReportQuery } from '@/stores/report/reportApi';
-import PDFFile from '@/components/PDFFile';
+
+import MySwal from '@/lib/alert';
 
 export default function Report() {
   const { register, handleSubmit } = useForm();
@@ -28,9 +30,18 @@ export default function Report() {
     data: reportData,
   } = useTransactionReportQuery(query, { skip });
 
+  useEffect(() => {
+    if (reportSuccess) {
+      MySwal.hideLoading();
+      MySwal.clickConfirm();
+    }
+  }, [reportSuccess]);
+
   function generateReportHandler(body) {
     setQuery(body);
     setSkip(true);
+
+    MySwal.showLoading();
 
     setTimeout(() => {
       setSkip(false);

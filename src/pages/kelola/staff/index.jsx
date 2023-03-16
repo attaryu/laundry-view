@@ -155,7 +155,7 @@ export default function Staff() {
               {getData.payload.map((staff) => (
                 <tr key={staff.id}>
                   <td className="p-2 px-2 text-sm font-semibold">
-                    <Link href={`/kelola/staff/${staff.id}`} className="hover:underline">
+                    <Link href={`/kelola/staff/${staff.id}`} className="underline hover:no-underline">
                       {firstToUpperCase(staff.name)}
                     </Link>
                   </td>
