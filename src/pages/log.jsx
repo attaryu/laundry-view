@@ -1,3 +1,6 @@
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+
 import Head from 'next/head';
 import Link from 'next/link';
 import Moment from 'react-moment';
@@ -8,9 +11,15 @@ import Loading from '@/components/Loading';
 import { useGetLogQuery } from '@/stores/log/logApi';
 
 export default function Log() {
+  const router = useRouter();
   const { isSuccess, isError, data, error } = useGetLogQuery(null, {
     pollingInterval: 60000,
   });
+  const auth = useSelector((state) => state.auth);
+
+  if (/kasir|manajer/gi.test(auth.role)) {
+    router.back();
+  }
 
   if (isError) {
     return (

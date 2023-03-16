@@ -13,7 +13,6 @@ import MySwal from '@/lib/alert';
 
 export default function Tambah() {
   const router = useRouter();
-
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const {

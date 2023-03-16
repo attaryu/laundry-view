@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -17,6 +18,7 @@ import firstToUpperCase from '@/lib/firstToUpperCase';
 
 export default function Outlet() {
   const router = useRouter();
+  const auth = useSelector((state) => state.auth);
 
   const {
     isLoading: getIsLoading,
@@ -93,12 +95,14 @@ export default function Outlet() {
       <div className="w-full p-6">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Daftar Outlet</h1>
-          <Link
-            href="/kelola/outlet/tambah"
-            className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
-          >
-            Tambah Outlet
-          </Link>
+          {/admin/ig.test(auth.role) ? (
+            <Link
+              href="/kelola/outlet/tambah"
+              className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
+            >
+              Tambah Outlet
+            </Link>
+          ) : null}
         </header>
 
         <main className="mt-10">
@@ -117,7 +121,9 @@ export default function Outlet() {
                     <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Nama</th>
                     <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Alamat</th>
                     <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Telepon</th>
-                    <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Aksi</th>
+                    {/admin/ig.test(auth.role) ? (
+                      <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Aksi</th>
+                    ) : null}
                   </tr>
                 </thead>
                 <tbody>
@@ -132,10 +138,12 @@ export default function Outlet() {
                         <address className="not-italic">{firstToUpperCase(outlet.alamat)}</address>
                       </td>
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(outlet.telepon)}</td>
-                      <td className="flex gap-2 p-2 px-2 text-sm">
-                        <ActionButton type="edit" href={`/kelola/outlet/${outlet.id}/edit`} />
-                        <ActionButton type="delete" handler={goDelete(outlet.id, outlet.nama)} />
-                      </td>
+                      {/admin/ig.test(auth.role) ? (
+                        <td className="flex gap-2 p-2 px-2 text-sm">
+                          <ActionButton type="edit" href={`/kelola/outlet/${outlet.id}/edit`} />
+                          <ActionButton type="delete" handler={goDelete(outlet.id, outlet.nama)} />
+                        </td>
+                      ) : null}
                     </tr>
                   ))}
                 </tbody>

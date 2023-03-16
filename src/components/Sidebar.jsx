@@ -143,27 +143,25 @@ export default function Sidebar() {
           to="/transaksi?page=1"
           open={open}
         />
-        {/* <LinkItem
-          IconDefault={MarkunreadMailboxOutlinedIcon}
-          IconHover={MarkunreadMailboxIcon}
-          title="Kotak Surat"
-          to="/kotak-surat"
-          open={open}
-        /> */}
-        <LinkItem
-          IconDefault={DescriptionOutlinedIcon}
-          IconHover={DescriptionIcon}
-          title="Laporan"
-          to="/laporan"
-          open={open}
-        />
-        <LinkItem
-          IconDefault={HistoryIcon}
-          IconHover={HistoryIcon}
-          title="Logging"
-          to="/log"
-          open={open}
-        />
+
+        {/admin/ig.test(user.role) ? (
+          <>
+            <LinkItem
+              IconDefault={DescriptionOutlinedIcon}
+              IconHover={DescriptionIcon}
+              title="Laporan"
+              to="/laporan"
+              open={open}
+            />
+            <LinkItem
+              IconDefault={HistoryIcon}
+              IconHover={HistoryIcon}
+              title="Logging"
+              to="/log"
+              open={open}
+            />
+          </>
+        ) : null}
       </nav>
 
       <Line />

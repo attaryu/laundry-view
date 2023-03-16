@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
-import Head from 'next/head';
 import { PDFViewer } from '@react-pdf/renderer';
+import Head from 'next/head';
 
 import Error from '@/components/Error';
 import Loading from '@/components/Loading';
@@ -14,9 +16,15 @@ import { useTransactionReportQuery } from '@/stores/report/reportApi';
 import MySwal from '@/lib/alert';
 
 export default function Report() {
+  const router = useRouter();
   const { register, handleSubmit } = useForm();
   const [skip, setSkip] = useState(true);
   const [query, setQuery] = useState(true);
+  const auth = useSelector((state) => state.auth);
+
+  if (/kasir|manajer/gi.test(auth.role)) {
+    router.back();
+  }
 
   const {
     isError,
