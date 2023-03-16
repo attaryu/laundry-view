@@ -45,11 +45,13 @@ export default function Sidebar() {
 
     if (isSuccessLogout) {
       router.push('/login');
+      sessionStorage.removeItem('request_token');
     }
 
     if (isError) {
       logout();
       router.push('/login');
+      sessionStorage.removeItem('request_token');
     }
   }, [isSuccess, isSuccessLogout, isError]);
 

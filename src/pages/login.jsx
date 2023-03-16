@@ -23,8 +23,8 @@ export default function Login() {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push('/');
       dispatch(pushUserData({ ...data }));
+      router.push('/');
     }
   }, [isSuccess]);
 
