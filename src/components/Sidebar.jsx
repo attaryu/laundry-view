@@ -23,7 +23,7 @@ import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
 import LinkItem from '@/components/LinkItem';
 import Spinner from '@/components/Spinner';
 
-import { pushUserData } from '@/stores/auth/auth';
+import { pushUserData, resetUser } from '@/stores/auth/auth';
 import { useGenerateRequestTokenQuery, useLogoutMutation } from '@/stores/auth/authApi';
 
 export default function Sidebar() {
@@ -39,17 +39,21 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (isSuccess) {
-      dispatch(pushUserData({ ...data.payload }));
+      dispatch(pushUserData(data.payload));
       sessionStorage.setItem('request_token', data.payload.request_token);
     }
 
     if (isSuccessLogout) {
       router.push('/login');
+      dispatch(resetUser());
+      sessionStorage.removeItem('request_token');
     }
 
     if (isError) {
       logout();
       router.push('/login');
+      dispatch(resetUser());
+      sessionStorage.removeItem('request_token');
     }
   }, [isSuccess, isSuccessLogout, isError]);
 

@@ -1,6 +1,7 @@
 import baseApi from '@/stores/baseApi';
 
 export const authApi = baseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (build) => ({
     register: build.mutation({
       query: (body) => ({
@@ -29,6 +30,7 @@ export const authApi = baseApi.injectEndpoints({
         method: 'GET',
         credentials: 'include',
       }),
+      keepUnusedDataFor: 0.1,
     }),
 
     logout: build.mutation({

@@ -24,7 +24,8 @@ export default function Login() {
   useEffect(() => {
     if (isSuccess) {
       router.push('/');
-      dispatch(pushUserData({ ...data }));
+      sessionStorage.setItem('request_token', data.token.requestToken);
+      dispatch(pushUserData(data));
     }
   }, [isSuccess]);
 
