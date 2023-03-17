@@ -30,6 +30,7 @@ export default function Sidebar() {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((states) => states.auth);
+  const privileges = /admin/ig.test(user.role);
 
   const [open, setOpen] = useState(true);
 
@@ -147,27 +148,24 @@ export default function Sidebar() {
           to="/transaksi?page=1"
           open={open}
         />
-        {/* <LinkItem
-          IconDefault={MarkunreadMailboxOutlinedIcon}
-          IconHover={MarkunreadMailboxIcon}
-          title="Kotak Surat"
-          to="/kotak-surat"
-          open={open}
-        /> */}
-        <LinkItem
-          IconDefault={DescriptionOutlinedIcon}
-          IconHover={DescriptionIcon}
-          title="Laporan"
-          to="/laporan"
-          open={open}
-        />
-        <LinkItem
-          IconDefault={HistoryIcon}
-          IconHover={HistoryIcon}
-          title="Logging"
-          to="/log"
-          open={open}
-        />
+        {privileges ? (
+          <>
+            <LinkItem
+              IconDefault={DescriptionOutlinedIcon}
+              IconHover={DescriptionIcon}
+              title="Laporan"
+              to="/laporan"
+              open={open}
+            />
+            <LinkItem
+              IconDefault={HistoryIcon}
+              IconHover={HistoryIcon}
+              title="Logging"
+              to="/log"
+              open={open}
+            />
+          </>
+        ) : null}
       </nav>
 
       <Line />

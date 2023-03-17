@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -20,6 +21,8 @@ import firstToUpperCase from '@/lib/firstToUpperCase';
 
 export default function Paket() {
   const router = useRouter();
+  const { auth } = useSelector((states) => states);
+  const privileges = /manajer/ig.test(auth.role);
 
   let options = [];
 
@@ -109,12 +112,14 @@ export default function Paket() {
       <div className="w-full p-6">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Daftar Paket</h1>
-          <Link
-            href="/kelola/paket/tambah"
-            className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
-          >
-            Tambah Paket
-          </Link>
+          {privileges ? (
+            <Link
+              href="/kelola/paket/tambah"
+              className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
+            >
+              Tambah Paket
+            </Link>
+          ) : null}
         </header>
 
         <main className="mt-10">
@@ -149,7 +154,9 @@ export default function Paket() {
                 <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Jenis</th>
                 <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Outlet</th>
                 <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Harga</th>
-                <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Aksi</th>
+                {privileges ? (
+                  <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Aksi</th>
+                ) : null}
               </tr>
             </thead>
             <tbody>
@@ -159,10 +166,12 @@ export default function Paket() {
                   <td className="p-2 px-2 text-sm">{firstToUpperCase(paket.jenis)}</td>
                   <td className="p-2 px-2 text-sm">{firstToUpperCase(paket.tb_outlet.nama)}</td>
                   <td className="p-2 px-2 text-sm">{(paket.harga).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
-                  <td className="flex gap-2 p-2 px-2 text-sm">
-                    <ActionButton type="edit" href={`/kelola/paket/${paket.id}/edit`} />
-                    <ActionButton type="delete" handler={goDelete(paket.id, paket.nama_paket)} />
-                  </td>
+                  {privileges ? (
+                    <td className="flex gap-2 p-2 px-2 text-sm">
+                      <ActionButton type="edit" href={`/kelola/paket/${paket.id}/edit`} />
+                      <ActionButton type="delete" handler={goDelete(paket.id, paket.nama_paket)} />
+                    </td>
+                  ) : null}
                 </tr>
               ))}
             </tbody>

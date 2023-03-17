@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -20,6 +21,8 @@ import firstToUpperCase from '@/lib/firstToUpperCase';
 
 export default function Staff() {
   const router = useRouter();
+  const { auth } = useSelector((state) => state);
+  const privileges = /admin/ig.test(auth.role);
 
   let options = [];
 
@@ -109,12 +112,14 @@ export default function Staff() {
       <div className="w-full p-6">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Daftar Staff</h1>
-          <Link
-            href="/kelola/staff/tambah"
-            className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
-          >
-            Tambah Staff
-          </Link>
+          {privileges ? (
+            <Link
+              href="/kelola/staff/tambah"
+              className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
+            >
+              Tambah Staff
+            </Link>
+          ) : null}
         </header>
 
         <main className="mt-10">
@@ -148,7 +153,9 @@ export default function Staff() {
                 <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Username</th>
                 <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Role</th>
                 <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Outlet</th>
-                <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Aksi</th>
+                {privileges ? (
+                  <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Aksi</th>
+                ) : null}
               </tr>
             </thead>
             <tbody>
@@ -162,14 +169,16 @@ export default function Staff() {
                   <td className="p-2 px-2 text-sm">{staff.username}</td>
                   <td className="p-2 px-2 text-sm">{firstToUpperCase(staff.role)}</td>
                   <td className="p-2 px-2 text-sm">{firstToUpperCase(staff.tb_outlet.nama)}</td>
-                  <td className="flex gap-2 p-2 px-2 text-sm">
-                    {staff.role !== 'admin' ? (
-                      <>
-                        <ActionButton type="edit" href={`/kelola/staff/${staff.id}/edit`} />
-                        <ActionButton type="delete" handler={goDelete(staff.id, staff.name)} />
-                      </>
-                    ) : null}
-                  </td>
+                  {privileges ? (
+                    <td className="flex gap-2 p-2 px-2 text-sm">
+                      {staff.role !== 'admin' ? (
+                        <>
+                          <ActionButton type="edit" href={`/kelola/staff/${staff.id}/edit`} />
+                          <ActionButton type="delete" handler={goDelete(staff.id, staff.name)} />
+                        </>
+                      ) : null}
+                    </td>
+                  ) : null}
                 </tr>
               ))}
             </tbody>

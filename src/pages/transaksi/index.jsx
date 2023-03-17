@@ -25,6 +25,7 @@ import firstToUpperCase from '@/lib/firstToUpperCase';
 export default function Transaction() {
   const router = useRouter();
   const user = useSelector((state) => state.auth);
+  const privileges = /kasir/ig.test(user.role);
 
   let options = [];
 
@@ -114,7 +115,7 @@ export default function Transaction() {
       <div className="w-full p-6">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Daftar Transaksi</h1>
-          {user.role === 'kasir' ? (
+          {privileges ? (
             <Link
               href="/transaksi/buat"
               className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
