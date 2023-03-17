@@ -15,7 +15,6 @@ export const authApi = baseApi.injectEndpoints({
       query: (body) => ({
         url: '/login',
         method: 'POST',
-        credentials: 'include',
         body,
       }),
       transformResponse: (response) => ({
@@ -28,7 +27,6 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: '/login',
         method: 'GET',
-        credentials: 'include',
       }),
       keepUnusedDataFor: 0.1,
     }),
@@ -37,7 +35,6 @@ export const authApi = baseApi.injectEndpoints({
       query: () => ({
         url: '/login',
         method: 'DELETE',
-        credentials: 'include',
       }),
     }),
   }),

@@ -1,19 +1,27 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { memo, useEffect, useState } from 'react';
 
-import Link from 'next/link';
 import Head from 'next/head';
+import Link from 'next/link';
 
 import Graph from '@/components/Graph';
 import Label from '@/components/Label';
-import Spinner from '@/components/Spinner';
 import Loading from '@/components/Loading';
+import Spinner from '@/components/Spinner';
 
 import { useGetAnalyticQuery } from '@/stores/analythic/analythicApi';
 import { useGetMailQuery } from '@/stores/mail/mailApi';
 
 export default function Home() {
+  const router = useRouter();
   const [today, setToday] = useState('today');
+
+  useEffect(() => {
+    if (!localStorage.getItem('request_token')) {
+      router.push('/login');
+    }
+  }, []);
 
   const {
     data,

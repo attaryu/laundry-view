@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQueryOrigin = fetchBaseQuery({
-  baseUrl: 'http://localhost:3030',
+  baseUrl: 'https://laundry-service.vercel.app',
   credentials: 'include',
   prepareHeaders: (headers) => {
-    const token = sessionStorage.getItem('request_token');
+    const token = localStorage.getItem('request_token');
     if (token) headers.set('authorization', `Bearer ${token}`);
 
     return headers;
@@ -18,7 +18,7 @@ async function baseQuery(args, api, extraOptions) {
     const refreshResult = await baseQueryOrigin('/login', api, extraOptions);
 
     if (refreshResult.data) {
-      sessionStorage.setItem('request_token', refreshResult.data.payload.request_token);
+      localStorage.setItem('request_token', refreshResult.data.payload.request_token);
       result = await baseQueryOrigin(args, api, extraOptions);
     }
   }

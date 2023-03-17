@@ -21,10 +21,8 @@ import StoreIcon from '@mui/icons-material/Store';
 import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
 
 import LinkItem from '@/components/LinkItem';
-import Spinner from '@/components/Spinner';
 
 import { pushUserData, resetUser } from '@/stores/auth/auth';
-import { useGenerateRequestTokenQuery, useLogoutMutation } from '@/stores/auth/authApi';
 
 export default function Sidebar() {
   const dispatch = useDispatch();
@@ -34,29 +32,20 @@ export default function Sidebar() {
 
   const [open, setOpen] = useState(true);
 
-  const { isSuccess, data, isError } = useGenerateRequestTokenQuery();
-  const [logout, {
-    isSuccess: isSuccessLogout, isLoading }] = useLogoutMutation();
+  function logOut() {
+    router.push('/login');
+    dispatch(resetUser());
+    localStorage.removeItem('request_token');
+  }
 
   useEffect(() => {
-    if (isSuccess) {
-      dispatch(pushUserData(data.payload));
-      sessionStorage.setItem('request_token', data.payload.request_token);
+    const profile = localStorage.getItem('profile');
+    if (profile) {
+      dispatch(pushUserData(JSON.parse(profile)));
+    } else {
+      logOut();
     }
-
-    if (isSuccessLogout) {
-      router.push('/login');
-      dispatch(resetUser());
-      sessionStorage.removeItem('request_token');
-    }
-
-    if (isError) {
-      logout();
-      router.push('/login');
-      dispatch(resetUser());
-      sessionStorage.removeItem('request_token');
-    }
-  }, [isSuccess, isSuccessLogout, isError]);
+  }, []);
 
   return (
     <div
@@ -174,22 +163,13 @@ export default function Sidebar() {
       <div className="mt-auto w-full">
         <button
           type="button"
-          onClick={() => logout()}
+          onClick={logOut}
           className={`flex w-full items-center gap-2 rounded-[7px] bg-slate-500 p-1.5 text-white duration-200 ${
             !open ? 'justify-center' : null
           }`}
         >
-          {isLoading ? (
-            <>
-              <Spinner color={{ bgSpin: 'fill-slate-300', spin: 'fill-slate-100' }} />
-              {open ? <span className="text-xs font-medium">Loading</span> : null}
-            </>
-          ) : (
-            <>
-              <ExitToAppIcon color="inherit" sx={{ fontSize: 22 }} />
-              {open ? <span className="text-xs font-medium">Logout</span> : null}
-            </>
-          )}
+          <ExitToAppIcon color="inherit" sx={{ fontSize: 22 }} />
+          <span className="text-xs font-medium">Logout</span>
         </button>
       </div>
     </div>
