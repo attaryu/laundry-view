@@ -48,6 +48,18 @@ export const customerApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: (result, error, args) => ([{ type: 'pelanggan', id: args }, 'analisis']),
     }),
+
+    getNameCustomer: build.query({
+      query: () => '/customer/name',
+      transformResponse: (response) => response.payload,
+      providesTags: (result) => {
+        if (result) {
+          const tags = result.map((data) => ({ type: 'pelanggan', id: data.id }));
+          return ['pelanggan', ...tags];
+        }
+        return ['pelanggan'];
+      },
+    }),
   }),
 });
 
@@ -56,4 +68,5 @@ export const {
   useGetSpecificCustomerQuery,
   useEditCustomerMutation,
   useDeleteCustomerMutation,
+  useGetNameCustomerQuery,
 } = customerApi;

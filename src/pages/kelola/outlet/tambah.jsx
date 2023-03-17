@@ -62,6 +62,7 @@ export default function Tambah() {
               placeholder="Nama"
               className="p-3 w-full bg-zinc-200 focus:outline-1 focus:outline rounded-md text-sm font-medium"
               {...register('nama', {
+                pattern: /^[a-zA-Z0-9]{4,10}$/,
                 minLength: {
                   message: 'Nama minimal 5 karakter',
                   value: 5,
