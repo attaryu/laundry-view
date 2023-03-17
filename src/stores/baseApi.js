@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { pushUserData } from '@/stores/auth/auth';
-
 const baseQueryOrigin = fetchBaseQuery({
   baseUrl: 'http://localhost:3030',
   credentials: 'include',
@@ -21,7 +19,6 @@ async function baseQuery(args, api, extraOptions) {
 
     if (refreshResult.data) {
       sessionStorage.setItem('request_token', refreshResult.data.payload.request_token);
-      api.dispatch(pushUserData({ ...refreshResult.data.payload }));
       result = await baseQueryOrigin(args, api, extraOptions);
     }
   }

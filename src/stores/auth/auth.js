@@ -20,9 +20,17 @@ export const auth = createSlice({
       state.id_outlet = action.payload.user.id_outlet;
       state.role = roleUpperCase;
     },
+    resetUser: (state) => {
+      state.id = '';
+      state.name = '';
+      state.username = '';
+      state.id_outlet = '';
+      state.role = '';
+    },
   },
 });
 
 export const {
   pushUserData,
+  resetUser,
 } = auth.actions;

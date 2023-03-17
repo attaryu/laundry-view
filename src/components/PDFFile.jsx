@@ -1,4 +1,5 @@
 import { Document, Page, StyleSheet, Text, View } from '@react-pdf/renderer';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
@@ -57,9 +58,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 15,
   },
+  totalContainer: {
+    paddingTop: 20,
+    paddingHorizontal: 10,
+  },
+  totalTitle: {
+    fontSize: 10,
+  },
+  total: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    paddingLeft: 5,
+  },
 });
 
 export default function PDFFile({ data, query }) {
+  const cumulative = data
+    .reduce((total, transaksi) => total + transaksi.total, 0)
+    .toLocaleString('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    });
+
   return (
     <Document>
       <Page>
@@ -74,9 +94,9 @@ export default function PDFFile({ data, query }) {
             </Text>
           )}
           <Text style={styles.date}>
-            {query.dateFrom}
+            {moment(query.dateFrom).format('DD MMMM YYYY')}
             {' - '}
-            {query.dateUntil}
+            {moment(query.dateUntil).format('DD MMMM YYYY')}
           </Text>
         </View>
         <View style={styles.table}>
@@ -104,9 +124,18 @@ export default function PDFFile({ data, query }) {
               <Text style={styles.row7}>
                 {transaksi.lunas ? 'Lunas' : 'Belum Lunas'}
               </Text>
-              <Text style={styles.row8}>{transaksi.tanggal}</Text>
+              <Text style={styles.row8}>{moment(transaksi.tanggal).format('DD MMMM YYYY hh:mm:ss')}</Text>
             </View>
           ))}
+        </View>
+        <View style={styles.totalContainer}>
+          <View style={styles.container}>
+            <Text style={styles.totalTitle}>
+              Total penghasilan:
+              {' '}
+              <Text style={styles.total}>{cumulative}</Text>
+            </Text>
+          </View>
         </View>
       </Page>
     </Document>

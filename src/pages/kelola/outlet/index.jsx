@@ -18,7 +18,8 @@ import firstToUpperCase from '@/lib/firstToUpperCase';
 
 export default function Outlet() {
   const router = useRouter();
-  const auth = useSelector((state) => state.auth);
+  const { auth } = useSelector((state) => state);
+  const privileges = /admin/ig.test(auth.role);
 
   const {
     isLoading: getIsLoading,
@@ -95,7 +96,7 @@ export default function Outlet() {
       <div className="w-full p-6">
         <header className="flex flex-col gap-2">
           <h1 className="text-2xl font-bold">Daftar Outlet</h1>
-          {/admin/ig.test(auth.role) ? (
+          {privileges ? (
             <Link
               href="/kelola/outlet/tambah"
               className="py-1.5 px-2.5 w-fit bg-emerald-400 hover:bg-emerald-500 font-semibold text-white rounded-md text-sm"
@@ -121,7 +122,7 @@ export default function Outlet() {
                     <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Nama</th>
                     <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Alamat</th>
                     <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Telepon</th>
-                    {/admin/ig.test(auth.role) ? (
+                    {privileges ? (
                       <th className="p-2 px-2 text-start text-xs font-medium text-zinc-400">Aksi</th>
                     ) : null}
                   </tr>
@@ -138,7 +139,7 @@ export default function Outlet() {
                         <address className="not-italic">{firstToUpperCase(outlet.alamat)}</address>
                       </td>
                       <td className="p-2 px-2 text-sm">{firstToUpperCase(outlet.telepon)}</td>
-                      {/admin/ig.test(auth.role) ? (
+                      {privileges ? (
                         <td className="flex gap-2 p-2 px-2 text-sm">
                           <ActionButton type="edit" href={`/kelola/outlet/${outlet.id}/edit`} />
                           <ActionButton type="delete" handler={goDelete(outlet.id, outlet.nama)} />

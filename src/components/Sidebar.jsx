@@ -23,13 +23,14 @@ import StoreOutlinedIcon from '@mui/icons-material/StoreOutlined';
 import LinkItem from '@/components/LinkItem';
 import Spinner from '@/components/Spinner';
 
-import { pushUserData } from '@/stores/auth/auth';
+import { pushUserData, resetUser } from '@/stores/auth/auth';
 import { useGenerateRequestTokenQuery, useLogoutMutation } from '@/stores/auth/authApi';
 
 export default function Sidebar() {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((states) => states.auth);
+  const privileges = /admin/ig.test(user.role);
 
   const [open, setOpen] = useState(true);
 
@@ -39,18 +40,20 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (isSuccess) {
-      dispatch(pushUserData({ ...data.payload }));
+      dispatch(pushUserData(data.payload));
       sessionStorage.setItem('request_token', data.payload.request_token);
     }
 
     if (isSuccessLogout) {
       router.push('/login');
+      dispatch(resetUser());
       sessionStorage.removeItem('request_token');
     }
 
     if (isError) {
       logout();
       router.push('/login');
+      dispatch(resetUser());
       sessionStorage.removeItem('request_token');
     }
   }, [isSuccess, isSuccessLogout, isError]);
@@ -145,8 +148,7 @@ export default function Sidebar() {
           to="/transaksi?page=1"
           open={open}
         />
-
-        {/admin/ig.test(user.role) ? (
+        {privileges ? (
           <>
             <LinkItem
               IconDefault={DescriptionOutlinedIcon}

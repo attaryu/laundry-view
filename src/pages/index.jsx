@@ -48,7 +48,7 @@ export default function Home() {
           <title>Beranda</title>
         </Head>
         <div className="grid place-items-center h-screen w-full gap-5 bg-zinc-100 px-7 py-5">
-          <p className="font-semibold opacity-40">{error.data.message}</p>
+          <p className="font-semibold opacity-40">{error.data?.message}</p>
         </div>
       </>
     );
