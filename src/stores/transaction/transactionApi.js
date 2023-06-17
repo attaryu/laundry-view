@@ -4,15 +4,14 @@ export const transactionApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (build) => ({
     getTransaction: build.query({
-      query: ({ page = 1, status, idOutlet, lunas, search }) => {
-        let query = '';
+      query: ({ page = 1, filter }) => {
+        const url = `/transaction?page=${page}`;
 
-        if (lunas) query = `${query}&lunas=${lunas}`;
-        if (status) query = `${query}&status=${status}`;
-        if (idOutlet) query = `${query}&id_outlet=${idOutlet}`;
-        if (search) query = `${query}&search=${search}`;
+        if (filter !== null) {
+          return `${url}&filter=${JSON.stringify(filter)}`;
+        }
 
-        return `/transaction?page=${page}${query}`;
+        return url;
       },
       providesTags: (result) => {
         if (result) {

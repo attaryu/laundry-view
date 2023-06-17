@@ -51,7 +51,7 @@ export default function Sidebar() {
     <div
       className={`${
         open ? 'w-[18%]' : 'w-[6%]'
-      } flex h-screen flex-col items-center p-3 outline outline-1 outline-zinc-300 duration-300`}
+      } flex h-screen flex-col items-center p-3 outline outline-1 outline-zinc-300 duration-300 relative`}
     >
 
       {/* User profile */}
@@ -169,7 +169,9 @@ export default function Sidebar() {
           }`}
         >
           <ExitToAppIcon color="inherit" sx={{ fontSize: 22 }} />
-          <span className="text-xs font-medium">Logout</span>
+          <span className={`text-xs font-medium ${!open ? 'hidden' : null}`}>
+            Logout
+          </span>
         </button>
       </div>
     </div>

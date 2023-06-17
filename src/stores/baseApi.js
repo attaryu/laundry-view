@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQueryOrigin = fetchBaseQuery({
-  baseUrl: 'https://laundry-service.vercel.app',
+  baseUrl: 'http://localhost:3030/',
   credentials: 'include',
   prepareHeaders: (headers) => {
     const token = localStorage.getItem('request_token');

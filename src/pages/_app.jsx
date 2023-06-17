@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 
 import Sidebar from '@/components/Sidebar';
+import { PopUpProvider } from '@/contexts/popUp';
 
 import store from '@/stores/store';
 
@@ -21,10 +22,14 @@ export default function App({ Component, pageProps }) {
 
   return (
     <Provider store={store}>
-      <div className={`${outfit.className}${isLoginPage ? '' : ' flex'}`}>
-        {isLoginPage ? null : <Sidebar />}
-        <Component {...pageProps} />
-      </div>
+      <PopUpProvider>
+        <div className={`${outfit.className}${isLoginPage ? '' : ' flex'}`}>
+          {isLoginPage ? null : <Sidebar />}
+          <div className="w-full">
+            <Component {...pageProps} />
+          </div>
+        </div>
+      </PopUpProvider>
     </Provider>
   );
 }
